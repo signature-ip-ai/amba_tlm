@@ -22,16 +22,16 @@ class AmbaTlmRecipe(ConanFile):
         "shared": False,
         "fPIC": True,
 
-        "systemc/2.3.3:fPIC": True,
-        "systemc/2.3.3:shared": False,
-        "systemc/2.3.3:enable_pthreads": False,
-        "systemc/2.3.3:enable_assertions": True,
-        "systemc/2.3.3:disable_virtual_bind": False,
-        "systemc/2.3.3:disable_async_updates": False,
-        "systemc/2.3.3:disable_copyright_msg": True,
-        "systemc/2.3.3:enable_phase_callbacks": True,
-        "systemc/2.3.3:enable_phase_callbacks_tracing": False,
-        "systemc/2.3.3:enable_immediate_self_notifications": False,
+        "systemc/3.0.1:fPIC": True,
+        "systemc/3.0.1:shared": False,
+        "systemc/3.0.1:enable_pthreads": False,
+        "systemc/3.0.1:enable_assertions": True,
+        "systemc/3.0.1:disable_virtual_bind": False,
+        "systemc/3.0.1:disable_async_updates": False,
+        "systemc/3.0.1:disable_copyright_msg": True,
+        "systemc/3.0.1:enable_phase_callbacks": True,
+        "systemc/3.0.1:enable_phase_callbacks_tracing": False,
+        "systemc/3.0.1:enable_immediate_self_notifications": False,
     }
 
     exports_sources = "CMakeLists.txt", "src/*", "include/*"
@@ -51,7 +51,7 @@ class AmbaTlmRecipe(ConanFile):
         deps.generate()
 
     def requirements(self):
-        self.requires("systemc/2.3.3")
+        self.requires("systemc/3.0.1")
 
     def build_requirements(self):
         self.tool_requires("cmake/3.27.6")

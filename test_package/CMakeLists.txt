@@ -5,7 +5,7 @@ project(amba_tlm_demo CXX)
 find_package(SystemCLanguage CONFIG REQUIRED)
 find_package(amba-tlm CONFIG REQUIRED)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CUSTOM_CXX_FLAGS -Wall -Werror -Wno-format -Wno-unused-variable)
