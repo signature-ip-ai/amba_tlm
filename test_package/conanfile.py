@@ -29,7 +29,7 @@ class AmbaTlmDemoRecipe(ConanFile):
 
     def requirements(self):
         self.requires("systemc/3.0.1")
-        self.requires("amba-tlm/20230601")
+        self.requires("ambatlm/20230601")
 
     def build_requirements(self):
         self.tool_requires("cmake/3.27.6")

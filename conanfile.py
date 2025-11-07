@@ -1,9 +1,13 @@
+#!/bin/env python3
+
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, CMakeDeps, cmake_layout
 
-class AmbaTlmRecipe(ConanFile):
-    name = "amba-tlm"
+class ambatlm(ConanFile):
+    name = "ambatlm"
     version = "20230601"
+    systemc_version = "3.0.1"
+    cmake_version = "3.31.6"
 
     license = "The Clear BSD License"
     author = "Arm Limited (or its affiliates)"
@@ -22,49 +26,67 @@ class AmbaTlmRecipe(ConanFile):
         "shared": False,
         "fPIC": True,
 
-        "systemc/3.0.1:fPIC": True,
-        "systemc/3.0.1:shared": False,
-        "systemc/3.0.1:enable_pthreads": False,
-        "systemc/3.0.1:enable_assertions": True,
-        "systemc/3.0.1:disable_virtual_bind": False,
-        "systemc/3.0.1:disable_async_updates": False,
-        "systemc/3.0.1:disable_copyright_msg": True,
-        "systemc/3.0.1:enable_phase_callbacks": True,
-        "systemc/3.0.1:enable_phase_callbacks_tracing": False,
-        "systemc/3.0.1:enable_immediate_self_notifications": False,
+        f"systemc/{systemc_version}:fPIC": True,
+        f"systemc/{systemc_version}:shared": False,
+        f"systemc/{systemc_version}:enable_pthreads": False,
+        f"systemc/{systemc_version}:enable_assertions": True,
+        f"systemc/{systemc_version}:disable_virtual_bind": True,
+        f"systemc/{systemc_version}:disable_async_updates": False,
+        f"systemc/{systemc_version}:disable_copyright_msg": True,
+        f"systemc/{systemc_version}:enable_phase_callbacks": True,
+        f"systemc/{systemc_version}:enable_phase_callbacks_tracing": False,
+        f"systemc/{systemc_version}:enable_immediate_self_notifications": False,
     }
 
-    exports_sources = "CMakeLists.txt", "src/*", "include/*"
+    exports_sources = (
+        "CMakeLists.txt",
+        "src/*",
+        "include/*",
+        "doc/*",
+        "test_package/*",
+        "conafile.py",
+        "README.md")
+
 
     def config_options(self):
         if self.settings.os == "Windows":
             del self.options.fPIC
 
+
     def layout(self):
         cmake_layout(self)
 
-    def generate(self):
-        tc = CMakeToolchain(self)
-        tc.generate()
 
+    def generate(self):
         deps = CMakeDeps(self)
         deps.generate()
 
+        tc = CMakeToolchain(self)
+        tc.user_presets_path = False
+        tc.generate()
+
+
     def requirements(self):
-        self.requires("systemc/3.0.1")
+        self.requires(f"systemc/{self.systemc_version}")
+
 
     def build_requirements(self):
-        self.tool_requires("cmake/3.27.6")
+        self.tool_requires(f"cmake/{self.cmake_version}") #pylint: disable=not-callable
+
 
     def build(self):
         cmake = CMake(self)
         cmake.configure()
         cmake.build()
 
+
     def package(self):
         cmake = CMake(self)
         cmake.install()
 
+
     def package_info(self):
         self.cpp_info.components["armtlmaxi4"].libs = ["armtlmaxi4"]
         self.cpp_info.components["armtlmchi"].libs = ["armtlmchi"]
+        self.cpp_info.includedirs = ["include"]
+        self.cpp_info.libdirs = ["lib"]
